@@ -9,20 +9,23 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadPosition();
+        LoadPosition();//初回ロード
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(transform.position.y < -7){
-            SceneManager.LoadScene("GameScene");
+        if(transform.position.y < -7){//画面外に出たらロードしなおし
+            LoadPosition();
         }
+    }
+    void OnCollisionEnter(Collision other) {
+        Debug.Log("other");
     }
     void LoadPosition(){
         savedPosX = PlayerPrefs.GetFloat("savedPosX", -20f);
         savedPosY = PlayerPrefs.GetFloat("savedPosY", 1.37f);
         savedPosZ = PlayerPrefs.GetFloat("savedPosZ", -3f);
-        transform.position = new Vector3(posX,posY,posZ);
+        transform.position = new Vector3(savedPosX,savedPosY,savedPosZ);
     }
 }

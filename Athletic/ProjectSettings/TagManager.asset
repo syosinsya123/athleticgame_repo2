@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - CinemachineTarget
+  - goal line
   layers:
   - Default
   - TransparentFX
