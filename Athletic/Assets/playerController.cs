@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
-    
+
     float savedPosX,savedPosY,savedPosZ;
     // Start is called before the first frame update
     void Start()
@@ -20,11 +20,12 @@ public class playerController : MonoBehaviour
             LoadPosition();
         }
     }
-    void OnCollisionEnter(Collision other) {
-        Debug.Log("other");
+    void OnTriggerEnter(Collider other) {
+        Debug.Log(other.tag);
     }
+
     void LoadPosition(){
-        savedPosX = PlayerPrefs.GetFloat("savedPosX", -20f);
+        savedPosX = PlayerPrefs.GetFloat("savedPosX", -35f);
         savedPosY = PlayerPrefs.GetFloat("savedPosY", 1.37f);
         savedPosZ = PlayerPrefs.GetFloat("savedPosZ", -3f);
         transform.position = new Vector3(savedPosX,savedPosY,savedPosZ);
