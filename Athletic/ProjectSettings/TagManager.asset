@@ -8,6 +8,7 @@ TagManager:
   - CinemachineTarget
   - goal line
   - flag
+  - enemy
   layers:
   - Default
   - TransparentFX
