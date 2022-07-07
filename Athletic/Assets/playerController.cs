@@ -19,7 +19,7 @@ public class playerController : MonoBehaviour
     void FixedUpdate()
     {
         if(transform.position.y < -7){//画面外に出たらロードしなおし
-            reLoad();
+            Dead();
         }
     }
     void OnTriggerEnter(Collider other) {
@@ -29,7 +29,7 @@ public class playerController : MonoBehaviour
                 SavePosition();
                 break;
             case "enemy":
-                reLoad();
+                Dead();
                 break;
         }
     }
@@ -46,11 +46,13 @@ public class playerController : MonoBehaviour
         }
     }
     void init(){
+        transform.localScale = Vector3.one;
         PlayerPrefs.SetFloat("savedPosX", -35f);
         PlayerPrefs.SetFloat("savedPosY", 1.37f);
         PlayerPrefs.SetFloat("savedPosZ", -3f);
     }
     void debugInit(){
+        transform.localScale = Vector3.one;
         PlayerPrefs.SetFloat("savedPosX", transform.position.x);
         PlayerPrefs.SetFloat("savedPosY", transform.position.y);
         PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
@@ -67,6 +69,22 @@ public class playerController : MonoBehaviour
         transform.position = new Vector3(savedPosX,savedPosY,savedPosZ);
     }
     void reLoad(){
+        Time.timeScale = 1;
         SceneManager.LoadScene("GameScene");
+        
     }
+    void Dead(){
+        Time.timeScale = 0;
+        transform.localScale = Vector3.zero;
+        StartCoroutine(Dying());
+        
+    }
+    IEnumerator Dying() 
+    {
+        //2秒待つ
+        yield return new WaitForSecondsRealtime(2);
+        reLoad();
+        //再開してから実行したい処理を書く
+        //例：敵オブジェクトを破壊
+    } 
 }

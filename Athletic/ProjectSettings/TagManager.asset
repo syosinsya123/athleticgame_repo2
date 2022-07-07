@@ -9,6 +9,8 @@ TagManager:
   - goal line
   - flag
   - enemy
+  - tileA
+  - tileB
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Hidden
   - 
   - 
   - 
