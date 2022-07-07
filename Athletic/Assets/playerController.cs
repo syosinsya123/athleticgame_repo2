@@ -8,6 +8,9 @@ public class playerController : MonoBehaviour
     public bool inFallEnemyArea;
     float savedPosX,savedPosY,savedPosZ;
     bool isStrongGravity = false;
+    [SerializeField]
+	[Tooltip("発生させるエフェクト(パーティクル)")]
+    private ParticleSystem particle;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +37,7 @@ public class playerController : MonoBehaviour
         switch(other.tag){
             case "flag":
                 SavePosition();
+                hitEffect_flag();
                 break;
             case "enemy":
                 Dead();
@@ -113,5 +117,18 @@ public class playerController : MonoBehaviour
         Vector3 grav = new Vector3(0,11f,0);
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         gameObject.GetComponent<Rigidbody>().AddForce(grav, ForceMode.Acceleration);
+    }
+        void hitEffect_flag(){
+        // パーティクルシステムのインスタンスを生成する。
+        ParticleSystem newParticle = Instantiate(particle);
+        // パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
+        Vector3 pos = this.transform.position;
+        pos.y += 1;
+        newParticle.transform.position = pos;
+        // パーティクルを発生させる。
+        newParticle.Play();
+        // インスタンス化したパーティクルシステムのGameObjectを削除する。(任意)
+        // ※第一引数をnewParticleだけにするとコンポーネントしか削除されない。
+        Destroy(newParticle.gameObject, 2.0f);
     }
 }
