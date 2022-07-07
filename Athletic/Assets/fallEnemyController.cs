@@ -15,7 +15,7 @@ public class fallEnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(flag || target.GetComponent<playerController>().inFallEnemyArea == true) {
             flag = true;

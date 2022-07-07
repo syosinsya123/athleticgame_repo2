@@ -15,15 +15,8 @@ public class changeTitleController : MonoBehaviour
         StartCoroutine(ShowTile());
         audioSource = GetComponent<AudioSource>();
     }
-    void Update()
-    {
-        Debug.Log(this.isCurrentTileA);
-    }
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-    }
+
+
     IEnumerator ShowTile() 
     {
         //終わるまで待ってほしい処理を書く

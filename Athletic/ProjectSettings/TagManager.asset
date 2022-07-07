@@ -11,6 +11,8 @@ TagManager:
   - enemy
   - tileA
   - tileB
+  - strongGravity
+  - fallEnemyArea
   layers:
   - Default
   - TransparentFX

@@ -7,6 +7,7 @@ public class playerController : MonoBehaviour
 {
     public bool inFallEnemyArea;
     float savedPosX,savedPosY,savedPosZ;
+    bool isStrongGravity = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,12 @@ public class playerController : MonoBehaviour
         if(transform.position.y < -7){//画面外に出たらロードしなおし
             Dead();
         }
+        if(this.isStrongGravity){
+            this.increaseGravity();
+        }
+    }
+    void OnCollisionStay(Collision collision){
+        Debug.Log(collision);
     }
     void OnTriggerEnter(Collider other) {
 
@@ -31,18 +38,30 @@ public class playerController : MonoBehaviour
             case "enemy":
                 Dead();
                 break;
+            case "goal line":
+                SavePosition();
+                break;
         }
     }
     void OnTriggerStay(Collider other) {
-        if (other.gameObject.name == "fallEnemyArea" )
-        {
-            inFallEnemyArea = true;
+        switch(other.tag){
+            case "fallEnemyArea":
+                inFallEnemyArea = true;
+                break;
+            case "strongGravity":
+                this.isStrongGravity = true;
+                break;
         }
     }
     void OnTriggerExit(Collider other) {
-        if (other.gameObject.name == "fallEnemyArea" )
-        {
-            inFallEnemyArea = false;
+        switch(other.tag){
+            case "fallEnemyArea":
+                inFallEnemyArea = false;
+                break;
+            case "strongGravity":
+                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                this.isStrongGravity = false;
+                break;
         }
     }
     void init(){
@@ -63,6 +82,7 @@ public class playerController : MonoBehaviour
         PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
     }
     void LoadPosition(){
+        Debug.Log("saved");
         savedPosX = PlayerPrefs.GetFloat("savedPosX");
         savedPosY = PlayerPrefs.GetFloat("savedPosY");
         savedPosZ = PlayerPrefs.GetFloat("savedPosZ");
@@ -73,6 +93,7 @@ public class playerController : MonoBehaviour
         SceneManager.LoadScene("GameScene");
         
     }
+
     void Dead(){
         Time.timeScale = 0;
         transform.localScale = Vector3.zero;
@@ -82,9 +103,15 @@ public class playerController : MonoBehaviour
     IEnumerator Dying() 
     {
         //2秒待つ
+
         yield return new WaitForSecondsRealtime(2);
         reLoad();
         //再開してから実行したい処理を書く
         //例：敵オブジェクトを破壊
     } 
+    void increaseGravity(){
+        Vector3 grav = new Vector3(0,11f,0);
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<Rigidbody>().AddForce(grav, ForceMode.Acceleration);
+    }
 }
