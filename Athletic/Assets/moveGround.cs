@@ -13,7 +13,7 @@ public class moveGround : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 p = new Vector3(0, moveY, 0);
         transform.Translate(p);
