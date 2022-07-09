@@ -13,6 +13,9 @@ TagManager:
   - tileB
   - strongGravity
   - fallEnemyArea
+  - upDownLift
+  - rightLeftLift
+  - rotationGround
   layers:
   - Default
   - TransparentFX

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class moveGround : MonoBehaviour
 {
-    int counter = 0;
-    float moveY = 0.05f;
+    int counter;
+    public int threshold;
+    public float speed;
+    Vector3 p;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,14 +17,30 @@ public class moveGround : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 p = new Vector3(0, moveY, 0);
-        transform.Translate(p);
-        counter++;
-        
-        if (counter == 50)
+        switch (gameObject.tag)
         {
-            counter = 0;
-            moveY *= -1;
+            case "upDownLift":
+                p = new Vector3(0, speed, 0);
+                counter++;
+                
+                if (counter == threshold)
+                {
+                    counter = 0;
+                    speed *= -1;
+                }
+                break;
+            case "rightLeftLift":
+                p = new Vector3(speed, 0 , 0);
+                counter++;
+                
+                if (counter == threshold)
+                {
+                    counter = 0;
+                    speed *= -1;
+                }
+                break;
         }
+        transform.Translate(p);
+
     }
 }

@@ -8,6 +8,8 @@ public class playerController : MonoBehaviour
     public bool inFallEnemyArea;
     float savedPosX,savedPosY,savedPosZ;
     bool isStrongGravity = false;
+    bool isPlayable;
+    public GameObject GameOverUI;
     [SerializeField]
 	[Tooltip("発生させるエフェクト(パーティクル)")]
     private ParticleSystem particle;
@@ -25,25 +27,33 @@ public class playerController : MonoBehaviour
         if(transform.position.y < -7){//画面外に出たらロードしなおし
             Dead();
         }
-        if(this.isStrongGravity){
-            this.increaseGravity();
-        }
+
     }
-    void OnCollisionStay(Collision collision){
-        Debug.Log(collision);
+    void Update()
+    {
+        if(!isPlayable){
+            GameOverUI.SetActive(true);
+
+        }
+        if(Input.anyKeyDown && !isPlayable){
+            isPlayable = true;
+            Time.timeScale = 1;
+            reLoad();
+        }
     }
     void OnTriggerEnter(Collider other) {
 
         switch(other.tag){
             case "flag":
                 SavePosition();
-                hitEffect_flag();
+                PlaySaveParticle();
                 break;
             case "enemy":
                 Dead();
                 break;
             case "goal line":
                 SavePosition();
+                PlaySaveParticle();
                 break;
         }
     }
@@ -52,9 +62,16 @@ public class playerController : MonoBehaviour
             case "fallEnemyArea":
                 inFallEnemyArea = true;
                 break;
-            case "strongGravity":
-                this.isStrongGravity = true;
+            case "rightLeftLift":
+                transform.SetParent(other.transform);
                 break;
+            case "upDownLift":
+                transform.SetParent(other.transform);
+                break;
+            case "rotationGround":
+                transform.SetParent(other.transform);
+                break;
+
         }
     }
     void OnTriggerExit(Collider other) {
@@ -62,19 +79,26 @@ public class playerController : MonoBehaviour
             case "fallEnemyArea":
                 inFallEnemyArea = false;
                 break;
-            case "strongGravity":
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
-                this.isStrongGravity = false;
+            case "rightLeftLift":
+                transform.SetParent(null);
+                break;
+            case "upDownLift":
+                transform.SetParent(null);
+                break;
+            case "rotationGround":
+                transform.SetParent(null);
                 break;
         }
     }
     void init(){
+        isPlayable = true;
         transform.localScale = Vector3.one;
         PlayerPrefs.SetFloat("savedPosX", -35f);
         PlayerPrefs.SetFloat("savedPosY", 1.37f);
         PlayerPrefs.SetFloat("savedPosZ", -3f);
     }
     void debugInit(){
+        isPlayable = true;
         transform.localScale = Vector3.one;
         PlayerPrefs.SetFloat("savedPosX", transform.position.x);
         PlayerPrefs.SetFloat("savedPosY", transform.position.y);
@@ -99,26 +123,15 @@ public class playerController : MonoBehaviour
     }
 
     void Dead(){
+        
         Time.timeScale = 0;
         transform.localScale = Vector3.zero;
-        StartCoroutine(Dying());
+        isPlayable = false;
         
-    }
-    IEnumerator Dying() 
-    {
-        //2秒待つ
-
-        yield return new WaitForSecondsRealtime(2);
-        reLoad();
-        //再開してから実行したい処理を書く
-        //例：敵オブジェクトを破壊
+        
     } 
-    void increaseGravity(){
-        Vector3 grav = new Vector3(0,11f,0);
-        gameObject.GetComponent<Rigidbody>().useGravity = false;
-        gameObject.GetComponent<Rigidbody>().AddForce(grav, ForceMode.Acceleration);
-    }
-        void hitEffect_flag(){
+
+    void PlaySaveParticle(){
         // パーティクルシステムのインスタンスを生成する。
         ParticleSystem newParticle = Instantiate(particle);
         // パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
