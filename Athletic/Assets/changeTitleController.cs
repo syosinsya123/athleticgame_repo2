@@ -12,8 +12,8 @@ public class changeTitleController : MonoBehaviour
     {
         this.isCurrentTileA = true;
         transform.localScale = Vector3.zero;
-        StartCoroutine(ShowTile());
         audioSource = GetComponent<AudioSource>();
+        StartCoroutine(ShowTile());
     }
 
 
@@ -35,9 +35,10 @@ public class changeTitleController : MonoBehaviour
             }
         }
         //2秒待つ
-        yield return new WaitForSeconds(3.5f);
+        
+        yield return new WaitForSeconds(1f);
         audioSource.PlayOneShot(changeSound);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
 
         this.isCurrentTileA = !this.isCurrentTileA;
         StartCoroutine(ShowTile());
