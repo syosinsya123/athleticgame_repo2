@@ -16,6 +16,8 @@ TagManager:
   - upDownLift
   - rightLeftLift
   - rotationGround
+  - fallGround
+  - resetSavedPos
   layers:
   - Default
   - TransparentFX

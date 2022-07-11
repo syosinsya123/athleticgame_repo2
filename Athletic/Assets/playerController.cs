@@ -7,17 +7,19 @@ public class playerController : MonoBehaviour
 {
     public bool inFallEnemyArea;
     float savedPosX,savedPosY,savedPosZ;
-    bool isStrongGravity = false;
     bool isPlayable;
     public GameObject GameOverUI;
+    breakingGround breakingGroundScript;
+    
     [SerializeField]
 	[Tooltip("発生させるエフェクト(パーティクル)")]
     private ParticleSystem particle;
     // Start is called before the first frame update
+
     void Start()
     {
-        // init();//イニシャライズ
-        debugInit();//デバッグ用
+        init();//イニシャライズ
+        // debugInit();//デバッグ用
         LoadPosition();//初回ロード
     }
 
@@ -55,6 +57,13 @@ public class playerController : MonoBehaviour
                 SavePosition();
                 PlaySaveParticle();
                 break;
+            case "fallGround":
+                breakingGroundScript = GameObject.Find(other.name).GetComponent<breakingGround>();
+                break;
+            case "resetSavedPos":
+                PlayerPrefs.DeleteAll();
+                Debug.Log("resetSavedPos");
+                break;
         }
     }
     void OnTriggerStay(Collider other) {
@@ -70,6 +79,10 @@ public class playerController : MonoBehaviour
                 break;
             case "rotationGround":
                 transform.SetParent(other.transform);
+                break;
+            case "fallGround":
+                transform.SetParent(other.transform);
+                breakingGroundScript.canFall = true;
                 break;
 
         }
@@ -88,29 +101,35 @@ public class playerController : MonoBehaviour
             case "rotationGround":
                 transform.SetParent(null);
                 break;
+            case "fallGround":
+                transform.SetParent(null);
+                breakingGroundScript.canFall = false;
+                break;
         }
     }
     void init(){
         isPlayable = true;
         transform.localScale = Vector3.one;
-        PlayerPrefs.SetFloat("savedPosX", -35f);
-        PlayerPrefs.SetFloat("savedPosY", 1.37f);
-        PlayerPrefs.SetFloat("savedPosZ", -3f);
+        if(!PlayerPrefs.HasKey("savedPosX")){
+            PlayerPrefs.SetFloat("savedPosX", -35f);
+            PlayerPrefs.SetFloat("savedPosY", 1.37f);
+            PlayerPrefs.SetFloat("savedPosZ", -3f);
+        }
     }
-    void debugInit(){
-        isPlayable = true;
-        transform.localScale = Vector3.one;
-        PlayerPrefs.SetFloat("savedPosX", transform.position.x);
-        PlayerPrefs.SetFloat("savedPosY", transform.position.y);
-        PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
-    }
+    // void debugInit(){
+    //     isPlayable = true;
+    //     transform.localScale = Vector3.one;
+    //     PlayerPrefs.SetFloat("savedPosX", transform.position.x);
+    //     PlayerPrefs.SetFloat("savedPosY", transform.position.y);
+    //     PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
+    // }
     void SavePosition(){
+        Debug.Log("saved");
         PlayerPrefs.SetFloat("savedPosX", transform.position.x);
         PlayerPrefs.SetFloat("savedPosY", transform.position.y);
         PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
     }
     void LoadPosition(){
-        Debug.Log("saved");
         savedPosX = PlayerPrefs.GetFloat("savedPosX");
         savedPosY = PlayerPrefs.GetFloat("savedPosY");
         savedPosZ = PlayerPrefs.GetFloat("savedPosZ");
@@ -123,12 +142,9 @@ public class playerController : MonoBehaviour
     }
 
     void Dead(){
-        
         Time.timeScale = 0;
         transform.localScale = Vector3.zero;
         isPlayable = false;
-        
-        
     } 
 
     void PlaySaveParticle(){
