@@ -75,6 +75,8 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        public static ThirdPersonController instance;
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -129,6 +131,12 @@ namespace StarterAssets
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            }
+            if (instance == null)
+            {
+                instance = this;
+                Debug.Log(instance);
+                DontDestroyOnLoad(this.gameObject);
             }
         }
 
@@ -387,6 +395,10 @@ namespace StarterAssets
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
+        }
+        public void jumpUp()
+        {
+            JumpHeight = 10.0f;
         }
     }
 }

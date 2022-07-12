@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityChan;
 
 public class playerController : MonoBehaviour
 {
@@ -63,6 +64,11 @@ public class playerController : MonoBehaviour
             case "resetSavedPos":
                 PlayerPrefs.DeleteAll();
                 Debug.Log("resetSavedPos");
+                break;
+            case "item_jump":
+                Debug.Log("取得");
+                StarterAssets.ThirdPersonController.instance.jumpUp();
+                // UnityChan.UnityChanControlScriptWithRgidBody.instance.jumpUp();
                 break;
         }
     }

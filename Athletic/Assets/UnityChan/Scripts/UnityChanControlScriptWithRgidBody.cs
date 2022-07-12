@@ -43,6 +43,7 @@ namespace UnityChan
 		private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
 		private GameObject cameraObject;	// メインカメラへの参照
+		public static UnityChanControlScriptWithRgidBody instance;
 		
 		// アニメーター各ステートへの参照
 		static int idleState = Animator.StringToHash ("Base Layer.Idle");
@@ -63,6 +64,13 @@ namespace UnityChan
 			// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 			orgColHight = col.height;
 			orgVectColCenter = col.center;
+			Debug.Log(instance);
+			if (instance == null)
+				{
+					instance = this;
+					Debug.Log(instance);
+					DontDestroyOnLoad(this.gameObject);
+				}
 		}
 	
 	
@@ -197,5 +205,10 @@ namespace UnityChan
 			col.height = orgColHight;
 			col.center = orgVectColCenter;
 		}
+
+		public void jumpUp()
+		{
+			jumpPower *= 2.0f; 
+		}	
 	}
 }
