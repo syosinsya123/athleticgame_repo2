@@ -66,7 +66,6 @@ public class playerController : MonoBehaviour
                 Debug.Log("resetSavedPos");
                 break;
             case "item_jump":
-                Debug.Log("取得");
                 StarterAssets.ThirdPersonController.instance.jumpUp();
                 break;
             case "item_gravity":
@@ -92,7 +91,10 @@ public class playerController : MonoBehaviour
                 transform.SetParent(other.transform);
                 breakingGroundScript.canFall = true;
                 break;
-
+            case "slowRightLeftLift":
+                StarterAssets.ThirdPersonController.instance.playerSlow();
+                Debug.Log("呼ばれた");
+                break;         
         }
     }
     void OnTriggerExit(Collider other) {
@@ -115,6 +117,8 @@ public class playerController : MonoBehaviour
                 break;
         }
     }
+    
+
     void init(){
         isPlayable = true;
         transform.localScale = Vector3.one;
@@ -169,3 +173,4 @@ public class playerController : MonoBehaviour
         Destroy(newParticle.gameObject, 2.0f);
     }
 }
+

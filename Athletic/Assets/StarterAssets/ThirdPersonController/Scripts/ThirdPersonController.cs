@@ -135,7 +135,6 @@ namespace StarterAssets
 
         private void Start()
         {
-            Debug.Log("ここまではきた");
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
             _hasAnimator = TryGetComponent(out _animator);
@@ -402,5 +401,12 @@ namespace StarterAssets
         {
             Gravity = 100.0f;
         }
+        public void playerSlow()
+        {
+            MoveSpeed = 0.5f;
+            SprintSpeed = 0.5f;
+            Debug.Log(MoveSpeed);
+            Debug.Log(SprintSpeed); 
     }
+}
 }
