@@ -75,8 +75,6 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
-        public static ThirdPersonController instance;
-
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -124,6 +122,7 @@ namespace StarterAssets
             }
         }
 
+        public static ThirdPersonController instance;
 
         private void Awake()
         {
@@ -132,16 +131,11 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
-            if (instance == null)
-            {
-                instance = this;
-                Debug.Log(instance);
-                DontDestroyOnLoad(this.gameObject);
-            }
         }
 
         private void Start()
         {
+            Debug.Log("ここまではきた");
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
             _hasAnimator = TryGetComponent(out _animator);
@@ -158,6 +152,10 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            
+            instance = this;
+            Debug.Log(instance);
         }
 
         private void Update()
@@ -399,6 +397,10 @@ namespace StarterAssets
         public void jumpUp()
         {
             JumpHeight = 10.0f;
+        }
+        public void gravityUp()
+        {
+            Gravity = 100.0f;
         }
     }
 }

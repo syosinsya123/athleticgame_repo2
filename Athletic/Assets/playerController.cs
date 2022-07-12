@@ -27,7 +27,7 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(transform.position.y < -7){//画面外に出たらロードしなおし
+        if(transform.position.y < -7 || transform.position.y > 10){//画面外に出たらロードしなおし
             Dead();
         }
 
@@ -68,7 +68,9 @@ public class playerController : MonoBehaviour
             case "item_jump":
                 Debug.Log("取得");
                 StarterAssets.ThirdPersonController.instance.jumpUp();
-                // UnityChan.UnityChanControlScriptWithRgidBody.instance.jumpUp();
+                break;
+            case "item_gravity":
+                StarterAssets.ThirdPersonController.instance.gravityUp();
                 break;
         }
     }
