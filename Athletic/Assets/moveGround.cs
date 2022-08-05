@@ -28,7 +28,7 @@ public class moveGround : MonoBehaviour
                     counter = 0;
                     speed *= -1;
                 }
-                break;
+            break;
             case "rightLeftLift":
             case "slowRightLeftLift":
                 p = new Vector3(speed, 0 , 0);

@@ -19,8 +19,8 @@ public class playerController : MonoBehaviour
 
     void Start()
     {
-        init();//イニシャライズ
-        // debugInit();//デバッグ用
+        // init();//イニシャライズ
+        debugInit();//デバッグ用
         LoadPosition();//初回ロード
     }
 
@@ -119,22 +119,22 @@ public class playerController : MonoBehaviour
     }
     
 
-    void init(){
-        isPlayable = true;
-        transform.localScale = Vector3.one;
-        if(!PlayerPrefs.HasKey("savedPosX")){
-            PlayerPrefs.SetFloat("savedPosX", -35f);
-            PlayerPrefs.SetFloat("savedPosY", 1.37f);
-            PlayerPrefs.SetFloat("savedPosZ", -3f);
-        }
-    }
-    // void debugInit(){
+    // void init(){
     //     isPlayable = true;
     //     transform.localScale = Vector3.one;
-    //     PlayerPrefs.SetFloat("savedPosX", transform.position.x);
-    //     PlayerPrefs.SetFloat("savedPosY", transform.position.y);
-    //     PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
+    //     if(!PlayerPrefs.HasKey("savedPosX")){
+    //         PlayerPrefs.SetFloat("savedPosX", -35f);
+    //         PlayerPrefs.SetFloat("savedPosY", 1.37f);
+    //         PlayerPrefs.SetFloat("savedPosZ", -3f);
+    //     }
     // }
+    void debugInit(){
+        isPlayable = true;
+        transform.localScale = Vector3.one;
+        PlayerPrefs.SetFloat("savedPosX", transform.position.x);
+        PlayerPrefs.SetFloat("savedPosY", transform.position.y);
+        PlayerPrefs.SetFloat("savedPosZ", transform.position.z);
+    }
     void SavePosition(){
         Debug.Log("saved");
         PlayerPrefs.SetFloat("savedPosX", transform.position.x);

@@ -18,6 +18,9 @@ TagManager:
   - rotationGround
   - fallGround
   - resetSavedPos
+  - item_jump
+  - item_gravity
+  - slowRightLeftLift
   layers:
   - Default
   - TransparentFX
